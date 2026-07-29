@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>秋招信息快捷填充助手 - 信息设置</title>
+  <link rel="stylesheet" href="options.css">
+  <script src="defaults.js" defer></script>
+  <script src="options.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">本地简历信息管理</p>
+      <h1>秋招信息快捷填充助手</h1>
+      <p class="subtitle">所有配置保存在本机 <code>chrome.storage.local</code>，扩展不会联网，也不会自动提交表单。</p>
+    </div>
+    <div class="save-status" id="saveStatus" role="status" aria-live="polite">已加载</div>
+  </header>
+
+  <main class="page-shell">
+    <aside class="notice" aria-label="安全提示">
+      <strong>安全提示</strong>
+      <span>本地存储不等于强加密。请勿保存账号密码、银行卡号、CVV、支付密码或验证码。</span>
+    </aside>
+
+    <section class="card profile-card">
+      <div class="section-heading">
+        <div>
+          <h2>信息方案</h2>
+          <p>可为中文简历、英文简历或不同岗位分别维护一套字段。</p>
+        </div>
+        <div class="button-row">
+          <button class="button" id="addProfileButton" type="button">新建方案</button>
+          <button class="button" id="renameProfileButton" type="button">重命名</button>
+          <button class="button danger-ghost" id="deleteProfileButton" type="button">删除方案</button>
+        </div>
+      </div>
+      <div class="profile-tabs" id="profileTabs" role="tablist" aria-label="信息方案"></div>
+    </section>
+
+    <div class="content-grid">
+      <section class="card groups-card">
+        <div class="section-heading compact">
+          <div>
+            <h2>分组</h2>
+            <p>控制面板中的折叠分组及顺序。</p>
+          </div>
+          <button class="button primary" id="addGroupButton" type="button">新增分组</button>
+        </div>
+        <div class="group-list" id="groupList"></div>
+      </section>
+
+      <section class="card fields-card">
+        <div class="section-heading compact">
+          <div>
+            <h2>字段</h2>
+            <p>点击字段按钮时才会从本地读取对应值。</p>
+          </div>
+          <button class="button primary" id="addFieldButton" type="button">新增字段</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>按钮名称</th>
+                <th>分组</th>
+                <th>保存状态</th>
+                <th>敏感</th>
+                <th>格式变体</th>
+                <th class="actions-column">操作</th>
+              </tr>
+            </thead>
+            <tbody id="fieldTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <section class="card data-card">
+      <div class="section-heading">
+        <div>
+          <h2>配置备份与重置</h2>
+          <p>导出文件可能包含敏感信息，请妥善保管并避免上传到公共位置。</p>
+        </div>
+        <div class="button-row">
+          <button class="button" id="exportButton" type="button">导出 JSON</button>
+          <button class="button" id="importButton" type="button">导入 JSON</button>
+          <button class="button" id="restoreButton" type="button">恢复默认模板</button>
+          <button class="button danger" id="clearButton" type="button">清空全部数据</button>
+          <input id="importFileInput" type="file" accept="application/json,.json" hidden>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="fieldDialog">
+    <form method="dialog" id="fieldForm" class="dialog-form">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">字段配置</p>
+          <h2 id="fieldDialogTitle">新增字段</h2>
+        </div>
+        <button class="close-dialog" id="closeFieldDialogButton" type="button" aria-label="关闭">×</button>
+      </div>
+
+      <label>
+        <span>按钮名称</span>
+        <input id="fieldLabelInput" name="label" type="text" maxlength="80" required autocomplete="off" placeholder="例如：手机号">
+      </label>
+
+      <label>
+        <span>实际填充值</span>
+        <textarea id="fieldValueInput" name="value" rows="4" maxlength="10000" autocomplete="off" placeholder="只保存在本机"></textarea>
+      </label>
+
+      <label>
+        <span>所属分组</span>
+        <select id="fieldGroupSelect" name="groupId" required></select>
+      </label>
+
+      <label>
+        <span>输出格式变体</span>
+        <input id="fieldFormatsInput" name="formats" type="text" maxlength="500" autocomplete="off" placeholder="用英文逗号分隔，例如：YYYY-MM-DD, YYYY年MM月DD日">
+        <small>主要用于日期和月份；目标为原生日期控件时会自动转换为浏览器要求的格式。</small>
+      </label>
+
+      <label class="checkbox-label">
+        <input id="fieldSensitiveInput" name="sensitive" type="checkbox">
+        <span>标记为敏感信息（悬浮面板中使用掩码预览）</span>
+      </label>
+
+      <p class="form-error" id="fieldFormError" role="alert"></p>
+      <div class="dialog-actions">
+        <button class="button" id="cancelFieldButton" type="button">取消</button>
+        <button class="button primary" type="submit" value="save">保存字段</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="pageToast" hidden role="status" aria-live="polite"></div>
+</body>
+</html>

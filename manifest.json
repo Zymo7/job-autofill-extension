@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "秋招信息快捷填充助手",
+  "version": "1.1.0",
+  "description": "在招聘网站中按需选择并填写本地保存的简历信息，不读取网页数据，也不会自动提交表单。",
+  "minimum_chrome_version": "102",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "显示或隐藏秋招信息快捷填充助手",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "32": "assets/icon32.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "options_page": "options.html"
+}

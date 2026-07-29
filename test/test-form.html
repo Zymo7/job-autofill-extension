@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>秋招信息快捷填充助手 - 测试表单</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      width: min(1040px, calc(100% - 32px));
+      margin: 32px auto;
+    }
+    .intro,
+    .card {
+      margin-bottom: 18px;
+      padding: 22px;
+      border: 1px solid #dbe3ef;
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: 0 10px 28px rgba(30, 50, 85, 0.07);
+    }
+    h1,
+    h2 {
+      margin-top: 0;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    label,
+    .field {
+      display: grid;
+      gap: 6px;
+      color: #334155;
+      font-weight: 650;
+    }
+    input,
+    textarea,
+    select,
+    [contenteditable] {
+      width: 100%;
+      min-height: 40px;
+      padding: 9px 10px;
+      border: 1px solid #bfcde0;
+      border-radius: 9px;
+      background: #ffffff;
+      color: #172033;
+      font: inherit;
+      font-weight: 400;
+    }
+    [contenteditable] {
+      min-height: 86px;
+    }
+    .wide {
+      grid-column: 1 / -1;
+    }
+    .muted {
+      color: #64748b;
+      font-weight: 400;
+    }
+    button {
+      padding: 9px 14px;
+      border: 0;
+      border-radius: 9px;
+      background: #2563eb;
+      color: #ffffff;
+      font: inherit;
+      cursor: pointer;
+    }
+    pre {
+      min-height: 120px;
+      max-height: 280px;
+      margin: 0;
+      padding: 12px;
+      overflow: auto;
+      border-radius: 10px;
+      background: #111827;
+      color: #d1fae5;
+      font-size: 12px;
+      white-space: pre-wrap;
+    }
+    .mirror {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #eef6ff;
+      color: #1748a5;
+    }
+    @media (max-width: 720px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .wide {
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="intro">
+    <h1>扩展测试表单</h1>
+    <p>先在扩展设置页为任意字段填写测试值，再点击浏览器工具栏中的扩展图标。选择下方控件后，点击悬浮面板中的信息按钮。</p>
+    <p class="muted">页面会记录 <code>beforeinput</code>、<code>input</code> 和 <code>change</code> 事件；提交按钮只显示提示，不会导航或发送数据。</p>
+  </section>
+
+  <form class="card" id="testForm">
+    <h2>支持的标准控件</h2>
+    <div class="form-grid">
+      <label for="fullName">
+        姓名
+        <input id="fullName" name="name" type="text" placeholder="请输入姓名" autocomplete="off">
+      </label>
+
+      <label for="phone">
+        手机号
+        <input id="phone" name="phone" type="tel" placeholder="请输入手机号" autocomplete="off">
+      </label>
+
+      <label for="email">
+        邮箱
+        <input id="email" name="email" type="email" placeholder="name@example.com" autocomplete="off">
+      </label>
+
+      <label for="website">
+        个人主页
+        <input id="website" name="website" type="url" placeholder="https://example.com" autocomplete="off">
+      </label>
+
+      <label for="birthDate">
+        出生日期
+        <input id="birthDate" name="birthDate" type="date">
+      </label>
+
+      <label for="graduationMonth">
+        毕业月份
+        <input id="graduationMonth" name="graduationMonth" type="month">
+      </label>
+
+      <label for="education">
+        学历
+        <select id="education" name="education">
+          <option value="">请选择</option>
+          <option value="本科">本科</option>
+          <option value="硕士">硕士</option>
+          <option value="博士">博士</option>
+          <option value="其他">其他</option>
+        </select>
+      </label>
+
+      <label for="gpa">
+        GPA
+        <input id="gpa" name="gpa" type="number" min="0" max="5" step="0.01" placeholder="例如 3.80">
+      </label>
+
+      <label class="wide" for="selfIntroduction">
+        自我介绍
+        <textarea id="selfIntroduction" name="selfIntroduction" rows="4" placeholder="请输入纯文本"></textarea>
+      </label>
+
+      <div class="field wide">
+        <span>Contenteditable 自定义编辑区</span>
+        <div id="editableIntroduction" contenteditable="true" role="textbox" aria-label="项目经历" data-placeholder="请输入项目经历"></div>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 28px">应被拒绝的控件</h2>
+    <div class="form-grid">
+      <label for="readonlyField">
+        只读输入框
+        <input id="readonlyField" type="text" value="不可修改" readonly>
+      </label>
+
+      <label for="disabledField">
+        禁用输入框
+        <input id="disabledField" type="text" value="不可修改" disabled>
+      </label>
+
+      <label for="passwordField">
+        密码
+        <input id="passwordField" type="password" autocomplete="new-password">
+      </label>
+
+      <label for="fileField">
+        文件上传
+        <input id="fileField" type="file">
+      </label>
+
+      <label for="verificationCode">
+        验证码
+        <input id="verificationCode" name="verificationCode" type="text" placeholder="验证码">
+      </label>
+
+      <label for="bankCardNumber">
+        银行卡号
+        <input id="bankCardNumber" name="bankCardNumber" type="text" placeholder="银行卡号">
+      </label>
+    </div>
+
+    <h2 style="margin-top: 28px">动态渲染区域</h2>
+    <div id="dynamicContainer" class="form-grid">
+      <p class="muted wide">动态输入框将在页面加载约 800ms 后插入。</p>
+    </div>
+
+    <div style="margin-top: 20px">
+      <button type="submit">模拟提交（不会发送）</button>
+      <span id="submitMessage" class="muted" style="margin-left: 10px"></span>
+    </div>
+  </form>
+
+  <section class="card">
+    <h2>框架式受控输入事件镜像</h2>
+    <label for="controlledInput">
+      模拟受控文本框
+      <input id="controlledInput" name="controlledInput" type="text" placeholder="插件填写后，下方状态应同步更新">
+    </label>
+    <div class="mirror" id="controlledMirror">状态值：（空）</div>
+  </section>
+
+  <section class="card">
+    <h2>事件日志</h2>
+    <pre id="eventLog">等待输入事件…</pre>
+  </section>
+
+  <script>
+    "use strict";
+
+    const logElement = document.getElementById("eventLog");
+    const logLines = [];
+
+    function describeTarget(target) {
+      return target.id || target.getAttribute("name") || target.tagName.toLowerCase();
+    }
+
+    for (const eventName of ["beforeinput", "input", "change"]) {
+      document.addEventListener(eventName, (event) => {
+        if (!event.target.matches("input, textarea, select, [contenteditable]")) {
+          return;
+        }
+        const value = event.target.isContentEditable ? event.target.textContent : event.target.value;
+        logLines.unshift(`${new Date().toLocaleTimeString()}  ${eventName.padEnd(11)} ${describeTarget(event.target)}  value="${String(value).slice(0, 80)}"`);
+        logElement.textContent = logLines.slice(0, 40).join("\n");
+      });
+    }
+
+    const controlledInput = document.getElementById("controlledInput");
+    const controlledMirror = document.getElementById("controlledMirror");
+    controlledInput.addEventListener("input", () => {
+      controlledMirror.textContent = `状态值：${controlledInput.value || "（空）"}`;
+    });
+
+    document.getElementById("testForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      document.getElementById("submitMessage").textContent = "已拦截模拟提交；没有网络请求。";
+    });
+
+    setTimeout(() => {
+      const container = document.getElementById("dynamicContainer");
+      container.replaceChildren();
+      const label = document.createElement("label");
+      label.htmlFor = "dynamicPosition";
+      label.textContent = "动态渲染的期望岗位";
+      const input = document.createElement("input");
+      input.id = "dynamicPosition";
+      input.name = "expectedPosition";
+      input.type = "text";
+      input.placeholder = "例如：前端开发工程师";
+      input.autocomplete = "off";
+      label.append(input);
+      container.append(label);
+    }, 800);
+  </script>
+</body>
+</html>
