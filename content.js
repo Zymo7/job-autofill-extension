@@ -42,6 +42,15 @@
   ];
   const GENERIC_CONTAINMENT_ALIASES = new Set(["name", "date", "sex", "tel", "rank"]);
   const LOGIN_CONTEXT_TERMS = ["username", "login", "account", "用户账号", "登录账号"];
+  const SEMANTIC_MATCH_PREFIXES = [
+    "请填写", "请输入", "请选择", "请补充", "填写", "输入", "选择", "补充",
+    "pleaseenter", "pleaseinput", "pleaseselect", "enter", "input", "select"
+  ];
+  const SEMANTIC_MATCH_SUFFIXES = [
+    "information", "description", "details", "detail", "info",
+    "名称", "题目", "标题", "信息", "资料", "详情", "内容", "情况", "记录", "条目", "描述", "说明",
+    "name", "title"
+  ];
 
   const state = {
     readyPromise: null,
@@ -725,12 +734,70 @@
     const best = ranked[0];
     const second = ranked[1];
     if (!best || best.score < 86) {
-      return null;
+      return findSemanticFamilyMatch(signals);
     }
     if (second && best.score - second.score < 10) {
-      return null;
+      return findSemanticFamilyMatch(signals);
     }
     return best;
+  }
+
+  function findSemanticFamilyMatch(signals) {
+    const candidates = state.data.fields
+      .map((field, index) => {
+        const stem = getSemanticMatchStem(field.label);
+        if (!isMeaningfulSemanticStem(stem)) {
+          return null;
+        }
+        const matchingSignals = signals.filter((signal) => getSemanticMatchStem(signal.compact) === stem);
+        if (!matchingSignals.length) {
+          return null;
+        }
+        return {
+          field,
+          index,
+          stem,
+          score: 88 + Math.max(...matchingSignals.map((signal) => signal.weight))
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.score - a.score || a.index - b.index);
+
+    const best = candidates[0];
+    if (!best) {
+      return null;
+    }
+    const competingFamily = candidates.find((candidate) =>
+      candidate.stem !== best.stem && best.score - candidate.score < 10
+    );
+    return competingFamily ? null : best;
+  }
+
+  function getSemanticMatchStem(value) {
+    let compact = normalizeMatchText(value).compact;
+    const prefix = SEMANTIC_MATCH_PREFIXES.find((candidate) => compact.startsWith(candidate));
+    if (prefix) {
+      compact = compact.slice(prefix.length);
+    }
+
+    compact = stripTrailingOrdinal(compact);
+    const suffix = SEMANTIC_MATCH_SUFFIXES.find((candidate) => compact.endsWith(candidate));
+    if (suffix) {
+      compact = compact.slice(0, -suffix.length);
+    }
+    return stripTrailingOrdinal(compact);
+  }
+
+  function stripTrailingOrdinal(value) {
+    return value.replace(/(?:第?(?:\d+|[一二三四五六七八九十百]+)(?:项|条)?)$/u, "");
+  }
+
+  function isMeaningfulSemanticStem(value) {
+    if (!value) {
+      return false;
+    }
+    const containsCjk = /[\u3400-\u9fff]/u.test(value);
+    return value.length >= (containsCjk ? 2 : 4);
   }
 
   function buildTargetSignals(element) {

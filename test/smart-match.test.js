@@ -89,7 +89,9 @@ matcher.state.data.fields = [
   { id: "field-school", label: "学校" },
   { id: "field-education", label: "学历" },
   { id: "field-degree", label: "学位" },
-  { id: "field-expectedPosition", label: "期望岗位" }
+  { id: "field-expectedPosition", label: "期望岗位" },
+  { id: "field-paper-1", label: "论文名称1" },
+  { id: "field-paper-2", label: "论文名称2" }
 ];
 
 function matchedFieldId(input) {
@@ -118,6 +120,18 @@ assert.equal(
 );
 assert.equal(
   matchedFieldId(new FakeInput({ attributes: { name: "username" } })),
+  null
+);
+assert.equal(
+  matchedFieldId(new FakeInput({ attributes: { "aria-label": "论文信息" } })),
+  "field-paper-1"
+);
+assert.equal(
+  matchedFieldId(new FakeInput({ attributes: { placeholder: "请填写论文标题" } })),
+  "field-paper-1"
+);
+assert.equal(
+  matchedFieldId(new FakeInput({ attributes: { "aria-label": "个人信息" } })),
   null
 );
 
