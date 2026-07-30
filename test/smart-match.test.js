@@ -91,7 +91,11 @@ matcher.state.data.fields = [
   { id: "field-degree", label: "学位" },
   { id: "field-expectedPosition", label: "期望岗位" },
   { id: "field-paper-1", label: "论文名称1" },
-  { id: "field-paper-2", label: "论文名称2" }
+  { id: "field-paper-2", label: "论文名称2" },
+  { id: "field-project-name-1", label: "项目名称1" },
+  { id: "field-project-name-2", label: "项目名称2" },
+  { id: "field-project-duty-1", label: "项目职责1" },
+  { id: "field-project-duty-2", label: "项目职责2" }
 ];
 
 function matchedFieldId(input) {
@@ -132,6 +136,46 @@ assert.equal(
 );
 assert.equal(
   matchedFieldId(new FakeInput({ attributes: { "aria-label": "个人信息" } })),
+  null
+);
+assert.equal(
+  matchedFieldId(new FakeInput({ attributes: { "aria-label": "项目中职责" } })),
+  "field-project-duty-1"
+);
+assert.equal(
+  matchedFieldId(new FakeInput({ attributes: { "aria-label": "项目中的主要职责" } })),
+  "field-project-duty-1"
+);
+assert.equal(
+  matchedFieldId(new FakeInput({ attributes: { placeholder: "请描述您在项目中承担的主要工作" } })),
+  "field-project-duty-1"
+);
+assert.equal(
+  matchedFieldId(new FakeInput({ attributes: { placeholder: "请说明项目期间所负责的具体内容" } })),
+  "field-project-duty-1"
+);
+assert.equal(
+  matchedFieldId(new FakeInput({ attributes: { "aria-label": "项目工作内容" } })),
+  "field-project-duty-1"
+);
+assert.equal(
+  matchedFieldId(new FakeInput({ attributes: { "aria-label": "项目责任" } })),
+  "field-project-duty-1"
+);
+assert.equal(
+  matchedFieldId(new FakeInput({ attributes: { "aria-label": "Project responsibilities" } })),
+  "field-project-duty-1"
+);
+assert.equal(
+  matchedFieldId(new FakeInput({ attributes: { "aria-label": "项目名称" } })),
+  "field-project-name-1"
+);
+assert.equal(
+  matchedFieldId(new FakeInput({ attributes: { "aria-label": "项目名称/项目职责" } })),
+  null
+);
+assert.equal(
+  matchedFieldId(new FakeInput({ attributes: { "aria-label": "在校经历" } })),
   null
 );
 

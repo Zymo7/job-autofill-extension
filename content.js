@@ -43,13 +43,40 @@
   const GENERIC_CONTAINMENT_ALIASES = new Set(["name", "date", "sex", "tel", "rank"]);
   const LOGIN_CONTEXT_TERMS = ["username", "login", "account", "用户账号", "登录账号"];
   const SEMANTIC_MATCH_PREFIXES = [
-    "请填写", "请输入", "请选择", "请补充", "填写", "输入", "选择", "补充",
-    "pleaseenter", "pleaseinput", "pleaseselect", "enter", "input", "select"
+    "请填写", "请输入", "请选择", "请补充", "请描述", "请说明", "请简述", "请列出",
+    "填写", "输入", "选择", "补充", "描述", "说明", "简述", "列出",
+    "pleaseenter", "pleaseinput", "pleaseselect", "pleasedescribe",
+    "enter", "input", "select", "describe"
   ];
   const SEMANTIC_MATCH_SUFFIXES = [
     "information", "description", "details", "detail", "info",
     "名称", "题目", "标题", "信息", "资料", "详情", "内容", "情况", "记录", "条目", "描述", "说明",
     "name", "title"
+  ];
+  const SEMANTIC_MATCH_MODIFIERS = ["主要", "具体", "相关", "对应"];
+  const SEMANTIC_MATCH_REPLACEMENTS = [
+    ["responsibilities", "职责"],
+    ["responsibility", "职责"],
+    ["jobduties", "职责"],
+    ["duties", "职责"],
+    ["duty", "职责"],
+    ["所承担的职责", "职责"],
+    ["承担的职责", "职责"],
+    ["所承担的工作", "职责"],
+    ["承担的工作", "职责"],
+    ["承担工作", "职责"],
+    ["所负责的工作", "职责"],
+    ["所负责的内容", "职责"],
+    ["负责的工作", "职责"],
+    ["负责的内容", "职责"],
+    ["负责工作", "职责"],
+    ["负责内容", "职责"],
+    ["工作内容", "职责"],
+    ["工作职责", "职责"],
+    ["岗位职责", "职责"],
+    ["责任", "职责"],
+    ["project", "项目"],
+    ["paper", "论文"]
   ];
 
   const state = {
@@ -778,6 +805,17 @@
     const prefix = SEMANTIC_MATCH_PREFIXES.find((candidate) => compact.startsWith(candidate));
     if (prefix) {
       compact = compact.slice(prefix.length);
+    }
+
+    compact = compact
+      .replace(/^(?:您|你)?在(?=.+(?:中|里|期间))/u, "")
+      .replace(/^(?:您的|你的)/u, "")
+      .replace(/(?:中|里|期间)(?:的)?(?=(?:主要|具体|相关|对应|所)?(?:承担|负责|工作|岗位|职责|责任))/gu, "");
+    for (const modifier of SEMANTIC_MATCH_MODIFIERS) {
+      compact = compact.split(modifier).join("");
+    }
+    for (const [source, replacement] of SEMANTIC_MATCH_REPLACEMENTS) {
+      compact = compact.split(source).join(replacement);
     }
 
     compact = stripTrailingOrdinal(compact);
