@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">秋招信息快捷填充助手功能示意图</title>
+  <desc id="desc">左侧是招聘网站表单，右侧是插件悬浮面板。当前手机号输入框被选中，插件通过智能匹配定位到手机号字段。</desc>
+  <defs>
+    <linearGradient id="pageBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fbff"/>
+      <stop offset="1" stop-color="#eef4ff"/>
+    </linearGradient>
+    <linearGradient id="panelHead" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fbff"/>
+      <stop offset="1" stop-color="#e8f1ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#0f172a" flood-opacity=".18"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="660" rx="28" fill="url(#pageBg)"/>
+  <rect x="34" y="28" width="1132" height="604" rx="20" fill="#fff" stroke="#dbe3ef" stroke-width="2"/>
+  <rect x="34" y="28" width="1132" height="54" rx="20" fill="#f8fafc"/>
+  <rect x="34" y="62" width="1132" height="20" fill="#f8fafc"/>
+  <circle cx="66" cy="55" r="7" fill="#fb7185"/>
+  <circle cx="90" cy="55" r="7" fill="#fbbf24"/>
+  <circle cx="114" cy="55" r="7" fill="#34d399"/>
+  <rect x="158" y="43" width="500" height="24" rx="12" fill="#e8edf5"/>
+  <text x="182" y="60" fill="#64748b" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="13">campus.example.com/apply</text>
+
+  <text x="82" y="132" fill="#102a56" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="26" font-weight="700">校园招聘申请</text>
+  <text x="82" y="160" fill="#64748b" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14">请填写基本信息与教育经历</text>
+
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
+    <text x="82" y="210" fill="#334155" font-size="14" font-weight="600">姓名</text>
+    <rect x="82" y="224" width="430" height="48" rx="10" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="100" y="254" fill="#94a3b8" font-size="14">请输入姓名</text>
+
+    <text x="82" y="316" fill="#1748a5" font-size="14" font-weight="700">手机号</text>
+    <rect x="78" y="326" width="438" height="56" rx="12" fill="#f8fbff" stroke="#2563eb" stroke-width="4"/>
+    <text x="100" y="361" fill="#64748b" font-size="14">请输入常用手机号</text>
+    <rect x="388" y="338" width="112" height="30" rx="15" fill="#dbeafe"/>
+    <text x="414" y="358" fill="#1748a5" font-size="12" font-weight="700">当前选中</text>
+
+    <text x="82" y="430" fill="#334155" font-size="14" font-weight="600">毕业院校</text>
+    <rect x="82" y="444" width="430" height="48" rx="10" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="100" y="474" fill="#94a3b8" font-size="14">请输入学校名称</text>
+
+    <rect x="82" y="536" width="130" height="42" rx="10" fill="#e2e8f0"/>
+    <text x="130" y="562" fill="#64748b" font-size="14" font-weight="600">上一步</text>
+    <rect x="226" y="536" width="130" height="42" rx="10" fill="#2563eb"/>
+    <text x="274" y="562" fill="#fff" font-size="14" font-weight="600">下一步</text>
+  </g>
+
+  <path d="M530 355 C585 355, 594 322, 648 322" fill="none" stroke="#16a269" stroke-width="4" stroke-linecap="round"/>
+  <path d="M636 312 L650 322 L636 332" fill="none" stroke="#16a269" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="548" y="343" fill="#087443" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="13" font-weight="700">本地识别并定位</text>
+
+  <g filter="url(#shadow)" font-family="Segoe UI, Microsoft YaHei, sans-serif">
+    <rect x="656" y="108" width="458" height="492" rx="18" fill="#fff" stroke="#aebed3" stroke-width="2"/>
+    <rect x="656" y="108" width="458" height="68" rx="18" fill="url(#panelHead)"/>
+    <rect x="656" y="154" width="458" height="22" fill="url(#panelHead)"/>
+    <text x="680" y="137" fill="#102a56" font-size="18" font-weight="700">秋招信息快捷填充助手</text>
+    <text x="680" y="159" fill="#64748b" font-size="12">当前方案：中文简历</text>
+    <circle cx="1050" cy="142" r="15" fill="#dfeafe"/>
+    <text x="1045" y="148" fill="#475569" font-size="18">−</text>
+    <circle cx="1086" cy="142" r="15" fill="#dfeafe"/>
+    <text x="1081" y="148" fill="#475569" font-size="18">×</text>
+
+    <rect x="680" y="194" width="410" height="72" rx="11" fill="#f8fafc" stroke="#dbe3ef"/>
+    <text x="696" y="216" fill="#64748b" font-size="11">当前选中元素</text>
+    <text x="696" y="238" fill="#23324d" font-size="12">input[type="tel"] · 手机号</text>
+    <rect x="696" y="246" width="116" height="18" rx="9" fill="#d5f5e3"/>
+    <text x="705" y="259" fill="#087443" font-size="10" font-weight="700">智能匹配：手机号</text>
+
+    <rect x="680" y="282" width="410" height="38" rx="9" fill="#fff" stroke="#cbd5e1"/>
+    <text x="696" y="306" fill="#94a3b8" font-size="12">搜索信息按钮</text>
+
+    <rect x="680" y="336" width="84" height="28" rx="14" fill="#eaf2ff" stroke="#8ab4ff"/>
+    <text x="698" y="354" fill="#1748a5" font-size="11" font-weight="700">基本信息</text>
+    <circle cx="756" cy="343" r="4" fill="#16a269"/>
+    <rect x="772" y="336" width="84" height="28" rx="14" fill="#fff" stroke="#d3deec"/>
+    <text x="790" y="354" fill="#526176" font-size="11">教育信息</text>
+    <rect x="864" y="336" width="84" height="28" rx="14" fill="#fff" stroke="#d3deec"/>
+    <text x="882" y="354" fill="#526176" font-size="11">求职信息</text>
+
+    <rect x="680" y="380" width="410" height="142" rx="11" fill="#fff" stroke="#dbe3ef"/>
+    <text x="696" y="405" fill="#334155" font-size="13" font-weight="700">基本信息</text>
+    <rect x="696" y="417" width="378" height="36" rx="8" fill="#f8fbff" stroke="#cdd9ea"/>
+    <text x="710" y="440" fill="#1f3b66" font-size="12" font-weight="600">姓名</text>
+    <rect x="692" y="461" width="386" height="48" rx="9" fill="#ecfdf3" stroke="#16a269" stroke-width="3"/>
+    <text x="710" y="482" fill="#1f3b66" font-size="12" font-weight="700">手机号</text>
+    <text x="710" y="498" fill="#64748b" font-size="10">138****5678</text>
+    <rect x="960" y="471" width="98" height="24" rx="12" fill="#d5f5e3"/>
+    <text x="977" y="487" fill="#087443" font-size="10" font-weight="700">智能匹配</text>
+
+    <line x1="656" y1="540" x2="1114" y2="540" stroke="#dbe3ef"/>
+    <rect x="680" y="554" width="124" height="32" rx="8" fill="#fff" stroke="#dbe3ef"/>
+    <text x="714" y="575" fill="#334155" font-size="11">撤销填写</text>
+    <rect x="814" y="554" width="124" height="32" rx="8" fill="#fff" stroke="#dbe3ef"/>
+    <text x="848" y="575" fill="#334155" font-size="11">锁定面板</text>
+    <rect x="948" y="554" width="142" height="32" rx="8" fill="#fff" stroke="#dbe3ef"/>
+    <text x="993" y="575" fill="#334155" font-size="11">信息设置</text>
+  </g>
+
+  <text x="600" y="626" text-anchor="middle" fill="#64748b" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="13">
+    智能匹配只负责定位；只有点击字段按钮后才会填写，插件不会自动提交表单。
+  </text>
+</svg>
