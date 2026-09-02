@@ -1004,47 +1004,85 @@
       if (!match) {
         return { ok: false, message: "未找到对应选项" };
       }
-      const oldValue = element.value;
-      const setter = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value").set;
-      setter.call(element, match.value);
-      dispatchInputAndChange(element, null);
-      if (recordUndo) {
-        state.undo = { element, oldValue, kind: "select" };
-      }
-      return { ok: true };
+      return runWithValidationLifecycle(element, () => {
+        const oldValue = element.value;
+        const setter = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value").set;
+        setter.call(element, match.value);
+        dispatchInputAndChange(element, null);
+        if (recordUndo) {
+          state.undo = { element, oldValue, kind: "select" };
+        }
+        return { ok: true };
+      });
     }
 
     if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
-      const oldValue = element.value;
-      if (!dispatchBeforeInput(element, value)) {
-        return { ok: false, message: "网页阻止了本次输入" };
-      }
-      const prototype = element instanceof HTMLTextAreaElement
-        ? HTMLTextAreaElement.prototype
-        : HTMLInputElement.prototype;
-      const setter = Object.getOwnPropertyDescriptor(prototype, "value").set;
-      setter.call(element, value);
-      dispatchInputAndChange(element, value);
-      if (recordUndo) {
-        state.undo = { element, oldValue, kind: "value" };
-      }
-      return { ok: true };
+      return runWithValidationLifecycle(element, () => {
+        const oldValue = element.value;
+        if (!dispatchBeforeInput(element, value)) {
+          return { ok: false, message: "网页阻止了本次输入" };
+        }
+        const prototype = element instanceof HTMLTextAreaElement
+          ? HTMLTextAreaElement.prototype
+          : HTMLInputElement.prototype;
+        const setter = Object.getOwnPropertyDescriptor(prototype, "value").set;
+        setter.call(element, value);
+        dispatchInputAndChange(element, value);
+        if (recordUndo) {
+          state.undo = { element, oldValue, kind: "value" };
+        }
+        return { ok: true };
+      });
     }
 
     if (element.isContentEditable) {
-      const oldValue = element.textContent || "";
-      if (!dispatchBeforeInput(element, value)) {
-        return { ok: false, message: "网页阻止了本次输入" };
-      }
-      element.textContent = value;
-      dispatchInputAndChange(element, value);
-      if (recordUndo) {
-        state.undo = { element, oldValue, kind: "contenteditable" };
-      }
-      return { ok: true };
+      return runWithValidationLifecycle(element, () => {
+        const oldValue = element.textContent || "";
+        if (!dispatchBeforeInput(element, value)) {
+          return { ok: false, message: "网页阻止了本次输入" };
+        }
+        element.textContent = value;
+        dispatchInputAndChange(element, value);
+        if (recordUndo) {
+          state.undo = { element, oldValue, kind: "contenteditable" };
+        }
+        return { ok: true };
+      });
     }
 
     return { ok: false, message: "目标元素不受支持" };
+  }
+
+  function runWithValidationLifecycle(element, apply) {
+    const focused = focusWithoutScrolling(element);
+    try {
+      return apply();
+    } finally {
+      if (focused && typeof element.blur === "function") {
+        try {
+          element.blur();
+        } catch (_error) {
+          // The value and standard input events have already been applied.
+        }
+      }
+    }
+  }
+
+  function focusWithoutScrolling(element) {
+    if (typeof element.focus !== "function") {
+      return false;
+    }
+    try {
+      element.focus({ preventScroll: true });
+      return true;
+    } catch (_error) {
+      try {
+        element.focus();
+        return true;
+      } catch (_fallbackError) {
+        return false;
+      }
+    }
   }
 
   function findSelectOption(select, value) {

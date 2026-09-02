@@ -22,7 +22,7 @@
 - 面板提供分组快速导航栏，点击分组名称即可清除搜索过滤、展开并平滑滚动到对应分组；滚动字段列表时导航栏会同步标记当前分组。
 - 显示目标元素选择器、placeholder 与附近 label 摘要。
 - 支持 `input`、`textarea`、原生 `select` 和 `contenteditable`。
-- 使用原生 value setter，并触发冒泡的 `beforeinput`、`input`、`change` 事件，兼容普通 HTML 及常见 React / Vue / Angular 受控文本框。
+- 使用原生 value setter，并按“聚焦、`beforeinput`、`input`、`change`、失焦”顺序通知页面；失焦阶段会产生浏览器原生 `blur` / `focusout` 事件，兼容普通 HTML、必填校验及常见 React / Vue / Angular 受控文本框。
 - 原生 `select` 先精确匹配 option `value`，再精确匹配显示文本，不做模糊选择。
 - 日期和月份字段支持 `YYYY-MM-DD`、`YYYY/MM/DD`、`YYYY年MM月DD日`、`YYYY-MM`、`YYYY年MM月` 等输出格式。
 - 提供插件级“撤销上次填写”，不会注册或拦截 `Ctrl+Z`。
@@ -109,7 +109,7 @@ job-autofill-extension/
 4. 点击面板按钮不会丢失网页目标控件。
 5. 点击手机号、邮箱、学校等标签明确的控件后，面板自动定位并标记相应字段；含糊或冲突场景不应强行推荐。
 6. 点击分组快速导航后，相应分组展开并滚动到可见区域；手动滚动列表时当前分组标记同步更新。
-7. 文本框填入后，测试页日志中出现 `beforeinput`、`input`、`change`。
+7. 文本框填入后，测试页日志中出现 `beforeinput`、`input`、`change`，并在新值写入后触发 `blur` / `focusout` 校验。
 8. “模拟受控文本框”的状态镜像随 `input` 事件更新。
 9. 学历字段值为“本科”“硕士”等时，原生 select 精确选中。
 10. password、file、readonly、disabled、验证码和银行卡字段给出拒绝原因。
@@ -120,6 +120,7 @@ job-autofill-extension/
 
 ```text
 node test/smart-match.test.js
+node test/fill-validation.test.js
 ```
 
 ## 权限解释

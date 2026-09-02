@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "秋招信息快捷填充助手",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "在招聘网站中按需选择并填写本地保存的简历信息，不读取网页数据，也不会自动提交表单。",
   "minimum_chrome_version": "102",
   "permissions": [
